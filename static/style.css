@@ -1,0 +1,69 @@
+.main {
+    margin: 100px;
+}
+
+.chat_area {
+    display: block;
+
+    background-color: rgb(240, 240, 240);
+
+    height: 500px;
+    width: 100%;
+    
+    border: 1px solid #000;
+
+    overflow-y: auto;
+}
+
+.flex {
+    display: flex;
+}
+
+.header_area {
+    margin-bottom: 10px;;
+}
+
+.nickname_area {
+    margin-right: 10px;
+}
+
+.header_area > h3 {
+    margin: 0;
+}
+
+.controls_area {
+    margin-top: 50px;
+    
+    height: 100px;
+}
+
+.input_area {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    margin-right: 50px;
+}
+
+.page_title {
+    display: block;
+    text-align: right;
+    width: 100%;
+}
+
+.send_button {
+    width: 100px;
+    height: 100px;
+}
+
+.marginfix {
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-bottom: 0;
+}
+
+.info_message {
+    color: grey;
+    text-align: center;
+}

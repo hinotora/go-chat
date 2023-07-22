@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  app:
+    container_name: chat-server
+    build:
+        context: .
+        dockerfile: Dockerfile
+    restart: always
+    ports:
+    - '80:80'
+    volumes:
+    - .:/app
+    tty: true
+  redis:
+    image: redis
+    restart: always
+    container_name: chat-redis
+    expose:
+      - '6379'

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Go Websocket Chat</title>
+</head>
+<body class="main">
+    <div class="flex header_area">
+        <input type="text" class="nickname_area" placeholder="Enter your nickname" id="nickname" onchange="validateNickField()">
+
+        <button onclick="wsConnect()" id="connect_btn">Connect</button>
+        &nbsp;
+        <button onclick="wsDisconnect()" id="disconnect_btn">Disconnect</button>
+
+        <h3 class="page_title">Websocket Go Chat</h3>
+    </div>
+
+    <div class="chat_area" id="chat">
+    </div>
+
+    <div class="flex controls_area">
+        <textarea class="input_area" id="input"></textarea>
+
+        <button class="send_button" onclick="sendMessage()" id="send_button">Send</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="message.js"></script>
+
+    <script>
+        var ws;
+        var currentNickName;
+
+        const nicknameField = document.getElementById("nickname");
+        const disconnectBtn = document.getElementById("disconnect_btn");
+
+        const chatDiv = document.getElementById("chat");
+
+        const connectBtn = document.getElementById("connect_btn");
+        const inputField = document.getElementById("input");
+        const send_button = document.getElementById("send_button");
+
+        beforeConnectButtonState();
+        validateNickField();
+
+        function validateNickField()
+        {
+            if(nicknameField.value.length > 0) {
+                connectBtn.disabled = false;
+            } else {
+                connectBtn.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
