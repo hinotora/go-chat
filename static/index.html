@@ -9,21 +9,21 @@
     <title>Go Websocket Chat</title>
 </head>
 <body class="main">
-    <div class="flex header_area">
-        <input type="text" class="nickname_area" placeholder="Enter your nickname" id="nickname" onchange="validateNickField()">
+    <h3 class="page_title">Websocket Go Chat</h3>
+
+    <div class="header_area">
+        <input type="text" class="nickname_area" placeholder="Your nickname" id="nickname" oninput="validateNickField()">
 
         <button onclick="wsConnect()" id="connect_btn">Connect</button>
         &nbsp;
         <button onclick="wsDisconnect()" id="disconnect_btn">Disconnect</button>
-
-        <h3 class="page_title">Websocket Go Chat</h3>
     </div>
 
     <div class="chat_area" id="chat">
     </div>
 
     <div class="flex controls_area">
-        <textarea class="input_area" id="input"></textarea>
+        <textarea class="input_area" id="input" placeholder="Message text" onkeydown="checkEnterPressed(event)"></textarea>
 
         <button class="send_button" onclick="sendMessage()" id="send_button">Send</button>
     </div>
@@ -45,6 +45,13 @@
         const send_button = document.getElementById("send_button");
 
         beforeConnectButtonState();
+
+        let last_nickname = getCookie("CURRENT_NICKNAME");
+
+        if(last_nickname !== undefined) {
+            nicknameField.value = last_nickname;
+        }
+
         validateNickField();
 
         function validateNickField()

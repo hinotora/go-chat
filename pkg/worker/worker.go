@@ -62,8 +62,13 @@ func Writer(conn *websocket.Conn) {
 		_, p, err := conn.ReadMessage()
 
 		if err != nil {
-			log.Println(err)
-			return
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				log.Printf("Unexpected: %v", err)
+			} else {
+				log.Println(err)
+			}
+
+			break
 		}
 
 		payload := string(p)

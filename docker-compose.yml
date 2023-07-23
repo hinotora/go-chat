@@ -3,10 +3,9 @@ version: "3.7"
 services:
   app:
     container_name: app_${APP_CONTAINER_NAME}
-    image: golang:1.20-alpine
-    # build:
-    #     context: .
-    #     dockerfile: Dockerfile
+    build:
+        context: .
+        dockerfile: Dockerfile
     restart: always
     ports:
     - '${APP_EXTERNAL_PORT}:80'
