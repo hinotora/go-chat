@@ -1,24 +1,25 @@
 package worker
 
 import (
-	"github.com/gorilla/websocket"
-	"github.com/hinotora/applicaton/pkg/redis"
-	"github.com/hinotora/applicaton/pkg/message"
-	"net/http"
-	"log"
-	"fmt"
 	"context"
 	"encoding/json"
-	"time"
-	"strings"
 	"errors"
+	"fmt"
+	"log"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/gorilla/websocket"
+	"github.com/hinotora/applicaton/pkg/message"
+	"github.com/hinotora/applicaton/pkg/redis"
 )
 
 var Upgrader = websocket.Upgrader{
-    ReadBufferSize:  1024,
-    WriteBufferSize: 1024,
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
 	CheckOrigin: func(r *http.Request) bool {
-		return true 
+		return true
 	},
 }
 
@@ -88,7 +89,7 @@ func Sender(conn *websocket.Conn) {
 		if err != nil {
 			log.Println(err)
 		}
-	
+
 		// Отвечаем на сообщение обратно браузеру
 		if err := conn.WriteMessage(1, []byte(msg.Payload)); err != nil {
 			log.Println(err)
@@ -101,7 +102,7 @@ func Sender(conn *websocket.Conn) {
 }
 
 func OnConnect(nickname string) {
-	msgText := fmt.Sprintf("%s entered chat", nickname);
+	msgText := fmt.Sprintf("%s entered chat", nickname)
 
 	msg := message.NewMessage(nickname, msgText, "info")
 
@@ -111,9 +112,8 @@ func OnConnect(nickname string) {
 }
 
 func OnClose(code int, text string) error {
-	
 
-	msgText := fmt.Sprintf("%s left chat", Nickname);
+	msgText := fmt.Sprintf("%s left chat", Nickname)
 
 	msg := message.NewMessage(Nickname, msgText, "info")
 

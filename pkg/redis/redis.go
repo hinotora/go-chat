@@ -2,9 +2,10 @@ package redis
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/hinotora/applicaton/pkg/config"
 	r "github.com/redis/go-redis/v9"
-	"strconv"
 )
 
 type Redis struct {
@@ -18,9 +19,9 @@ func Load(config *config.Config) {
 		redis := &Redis{}
 
 		redis.Client = r.NewClient(&r.Options{
-			Addr:	  fmt.Sprintf("%s:%s", config.Redis.Host, strconv.Itoa(int(config.Redis.Port))),
+			Addr: fmt.Sprintf("%s:%s", config.Redis.Host, strconv.Itoa(int(config.Redis.Port))),
 		})
-	
+
 		Instance = redis
 	}
 }

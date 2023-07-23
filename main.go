@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/hinotora/applicaton/pkg/config"
-	"github.com/hinotora/applicaton/pkg/router"
 	"github.com/hinotora/applicaton/pkg/redis"
+	"github.com/hinotora/applicaton/pkg/router"
 )
 
 func main() {
