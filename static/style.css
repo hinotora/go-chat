@@ -55,15 +55,19 @@
     width: 100px;
 }
 
-.marginfix {
-    margin-top: 10px;
-    margin-left: 5px;
-    margin-bottom: 0;
+.message_margin {
+    margin: 10px 5px 0 5px;
 }
 
 .info_message {
     color: grey;
     text-align: center;
+}
+
+.basic_message {
+    background-color: rgb(180, 180, 180);
+    padding: 5px;
+    border-radius: 5px;
 }
 
 

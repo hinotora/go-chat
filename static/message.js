@@ -37,6 +37,8 @@ class Message {
                 
                 p = getMessageParagraph("[" + time_formatted + "] " + this.nickname + ": " + this.text);
 
+                p.classList.add("basic_message");
+
                 break;
             
             default:

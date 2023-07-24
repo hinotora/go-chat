@@ -70,7 +70,7 @@ function wsDisconnect() {
 function getMessageParagraph(text) {
     p = document.createElement("p");
         
-    p.classList.add("marginfix");
+    p.classList.add("message_margin");
 
     p.innerHTML = text
 

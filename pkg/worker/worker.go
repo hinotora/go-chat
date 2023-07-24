@@ -3,7 +3,6 @@ package worker
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -23,8 +22,6 @@ var Upgrader = websocket.Upgrader{
 	},
 }
 
-var Nickname string = ""
-var BaseCloseHandler func(code int, text string) error
 
 func OpenWebsocket(w http.ResponseWriter, r *http.Request) {
 	connection, err := Upgrader.Upgrade(w, r, nil)
@@ -33,27 +30,26 @@ func OpenWebsocket(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	BaseCloseHandler = connection.CloseHandler()
-	Nickname = "Unknown user"
+	nickname := "User"
 
 	cookie, err := r.Cookie("CURRENT_NICKNAME")
 
 	if err == nil {
 		s := strings.Split(cookie.String(), "=")
 
-		Nickname = s[1]
+		nickname = s[1]
 	}
 
-	connection.SetCloseHandler(OnClose)
+	connection.SetCloseHandler(getCloseHandler(connection, nickname))
 
-	log.Printf("Openned new connection with [%s] / [%s]", connection.RemoteAddr().String(), Nickname)
+	log.Printf("Openned new connection with [%s] / [%s]", connection.RemoteAddr().String(), nickname)
 
 	go Writer(connection)
 	go Sender(connection)
 
 	time.Sleep(250 * time.Millisecond)
 
-	OnConnect(Nickname)
+	OnConnect(nickname)
 }
 
 func Writer(conn *websocket.Conn) {
@@ -116,17 +112,20 @@ func OnConnect(nickname string) {
 	redis.Instance.Client.Publish(context.TODO(), "chat", t).Err()
 }
 
-func OnClose(code int, text string) error {
+func getCloseHandler(connection *websocket.Conn, nickname string) func(code int, text string) error {
+	return func(code int, text string) error {
+		msgText := fmt.Sprintf("%s left chat", nickname)
+		
+		msg := message.NewMessage(nickname, msgText, "info")
+	
+		t, _ := json.Marshal(msg)
+	
+		message := websocket.FormatCloseMessage(code, text)
+	
+		connection.WriteControl(websocket.CloseMessage, message, time.Now().Add(time.Second))
+	
+		redis.Instance.Client.Publish(context.TODO(), "chat", t).Err()
 
-	msgText := fmt.Sprintf("%s left chat", Nickname)
-
-	msg := message.NewMessage(Nickname, msgText, "info")
-
-	t, _ := json.Marshal(msg)
-
-	redis.Instance.Client.Publish(context.TODO(), "chat", t).Err()
-
-	BaseCloseHandler(code, text)
-
-	return errors.New(text)
+		return nil
+	}
 }
