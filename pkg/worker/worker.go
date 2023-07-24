@@ -46,6 +46,7 @@ func OpenWebsocket(w http.ResponseWriter, r *http.Request) {
 
 	go Writer(connection)
 	go Sender(connection)
+	go Ticker(connection)
 
 	time.Sleep(250 * time.Millisecond)
 
@@ -99,6 +100,14 @@ func Sender(conn *websocket.Conn) {
 		}
 
 		log.Printf("OUTGOING TO [%s] %s", conn.RemoteAddr().String(), msg.Payload)
+	}
+}
+
+func Ticker(connection *websocket.Conn) {
+	for {
+		time.Sleep(10 * time.Second)
+
+		connection.WriteControl(10, []byte(""), time.Now().Add(1 * time.Second))
 	}
 }
 
